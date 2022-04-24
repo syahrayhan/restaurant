@@ -1,7 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:restaurant/ui/menu_list_page.dart';
+import 'package:restaurant/common/navigation.dart';
+import 'package:restaurant/ui/main_bottom_navigation.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(
       const Duration(seconds: 2),
-      () => Navigator.pushReplacementNamed(context, MenuListPage.routeName),
+      () => Navigation.intentPushReplacement(MainBottomNavigation.routeName),
     );
   }
 

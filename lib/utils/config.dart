@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 class Config {
   static const String BASE_URL = 'https://restaurant-api.dicoding.dev/';
   static const String RESTAURANT_LIST_URL = BASE_URL + 'list';

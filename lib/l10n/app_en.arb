@@ -4,5 +4,7 @@
   "searchTitle": "Search",
   "searchHint": "Search restaurant",
   "foodTitle": "Foods :",
-  "drinkTitle": "Drinks :"
+  "drinkTitle": "Drinks :",
+  "noInternet": "No internet please refresh page",
+  "searchNoData": "No Data"
 }

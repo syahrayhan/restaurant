@@ -2,8 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/common/common.dart';
+import 'package:restaurant/data/api/api_service.dart';
 import 'package:restaurant/provider/app_provider.dart';
 import 'package:restaurant/utils/config.dart';
+import 'package:restaurant/utils/state.dart';
 import 'package:restaurant/widgets/menu_card_widget.dart';
 
 import 'package:restaurant/widgets/skeleton_widget.dart';
@@ -28,7 +30,7 @@ class _DetailPageState extends State<DetailPage> {
     AppProvider provider;
     return ChangeNotifierProvider(
       create: (_) {
-        provider = AppProvider();
+        provider = AppProvider(apiService: ApiService());
         return provider.getRestaurant(widget.restaurantId);
       },
       child: Scaffold(

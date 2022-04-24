@@ -4,5 +4,7 @@
   "searchTitle": "Cari",
   "searchHint": "Cari restaurant",
   "foodTitle": "Makanan :",
-  "drinkTitle": "Minuman :"
+  "drinkTitle": "Minuman :",
+  "noInternet": "Tidak ada koneksi internet, silahkan refresh halaman",
+  "searchNoData": "Tidak ada data"
 }

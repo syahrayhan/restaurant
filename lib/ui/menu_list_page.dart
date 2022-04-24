@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/common/common.dart';
+import 'package:restaurant/common/navigation.dart';
 import 'package:restaurant/provider/app_provider.dart';
 import 'package:restaurant/ui/detail_page.dart';
 import 'package:restaurant/ui/search_page.dart';
-import 'package:restaurant/utils/config.dart';
+import 'package:restaurant/utils/state.dart';
 import 'package:restaurant/widgets/card_widget.dart';
 import 'package:restaurant/widgets/shimmer_card_widget.dart';
 
@@ -21,15 +22,6 @@ class _MenuListPageState extends State<MenuListPage> {
   final keyRefresh = GlobalKey<RefreshIndicatorState>();
 
   @override
-  void initState() {
-    Future.microtask(() {
-      final provider = Provider.of<AppProvider>(context, listen: false);
-      provider.getRestaurants();
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AppProvider>(context, listen: false);
     return Scaffold(
@@ -38,7 +30,8 @@ class _MenuListPageState extends State<MenuListPage> {
         actions: [
           IconButton(
             onPressed: () async {
-              await Navigator.pushNamed(context, SearchPage.routeName);
+              await Navigation.intent(SearchPage.routeName);
+              // await Navigator.pushNamed(context, SearchPage.routeName);
               provider.getRestaurants();
             },
             icon: const Icon(Icons.search),
@@ -80,16 +73,14 @@ class _MenuListPageState extends State<MenuListPage> {
                 itemCount: state.restaurants.restaurants.length,
                 itemBuilder: (context, index) {
                   return CardWidget(
-                    imageUrl: Config.IMG_SMALL_URL +
-                        state.restaurants.restaurants[index].pictureId,
-                    restaurantName: state.restaurants.restaurants[index].name,
-                    country: state.restaurants.restaurants[index].city,
-                    rating: "${state.restaurants.restaurants[index].rating}",
+                    restaurant: state.restaurants.restaurants[index],
                     ontap: () {
-                      Navigator.pushNamed(context, DetailPage.routeName,
-                          arguments: DetailPage(
-                              restaurantId:
-                                  state.restaurants.restaurants[index].id));
+                      Navigation.intentWithData(
+                        DetailPage.routeName,
+                        DetailPage(
+                          restaurantId: state.restaurants.restaurants[index].id,
+                        ),
+                      );
                     },
                   );
                 },
@@ -117,8 +108,8 @@ class _MenuListPageState extends State<MenuListPage> {
               child: Stack(
                 children: [
                   ListView(),
-                  const Center(
-                    child: Text("No internet please refresh page"),
+                  Center(
+                    child: Text(AppLocalizations.of(context)!.noInternet),
                   ),
                 ],
               ),
@@ -132,8 +123,8 @@ class _MenuListPageState extends State<MenuListPage> {
               child: Stack(
                 children: [
                   ListView(),
-                  const Center(
-                    child: Text("No Data"),
+                  Center(
+                    child: Text(AppLocalizations.of(context)!.searchNoData),
                   ),
                 ],
               ),

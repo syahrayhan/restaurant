@@ -3,11 +3,12 @@ import 'package:restaurant/data/api/api_service.dart';
 import 'package:restaurant/data/models/restaurant_detail_response.dart';
 import 'package:restaurant/data/models/restaurant_response.dart';
 import 'package:restaurant/data/models/search_restaurant_response.dart';
-
-enum ResultState { Loading, NoData, HasData, Error, Empty, HasSearchData, }
+import 'package:restaurant/utils/state.dart';
 
 class AppProvider extends ChangeNotifier {
-  final ApiService apiService = ApiService();
+  late ApiService apiService;
+
+  AppProvider({required this.apiService});
 
   late RestaurantResponse _responseRestaurant;
   late SearchRestaurantResponse _responseSearchRestaurant;
@@ -55,13 +56,11 @@ class AppProvider extends ChangeNotifier {
   }
 
   AppProvider getRestaurant(String id) {
-    _fetchRestaurant(id);
+    fetchRestaurant(id);
     return this;
   }
 
-
-
-  Future<dynamic> _fetchRestaurant(String id) async {
+  Future<dynamic> fetchRestaurant(String id) async {
     try {
       _state = ResultState.Loading;
       notifyListeners();

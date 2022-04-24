@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant/common/common.dart';
+import 'package:restaurant/common/navigation.dart';
 import 'package:restaurant/provider/app_provider.dart';
 import 'package:restaurant/ui/detail_page.dart';
-import 'package:restaurant/utils/config.dart';
+import 'package:restaurant/utils/state.dart';
 import 'package:restaurant/widgets/card_widget.dart';
 import 'package:restaurant/widgets/shimmer_card_widget.dart';
 
@@ -113,17 +114,14 @@ class _SearchPageState extends State<SearchPage> {
               itemCount: state.searchResult.restaurants.length,
               itemBuilder: (context, index) {
                 return CardWidget(
-                  imageUrl: Config.IMG_SMALL_URL +
-                      state.searchResult.restaurants[index].pictureId,
-                  restaurantName: state.searchResult.restaurants[index].name,
-                  country: state.searchResult.restaurants[index].city,
-                  rating:
-                      state.searchResult.restaurants[index].rating.toString(),
+                  restaurant: state.searchResult.restaurants[index],
                   ontap: () {
-                    Navigator.pushNamed(context, DetailPage.routeName,
-                        arguments: DetailPage(
-                            restaurantId:
-                            state.restaurants.restaurants[index].id));
+                    Navigation.intentWithData(
+                      DetailPage.routeName,
+                      DetailPage(
+                        restaurantId: state.searchResult.restaurants[index].id,
+                      ),
+                    );
                   },
                 );
               },
