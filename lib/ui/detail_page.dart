@@ -7,6 +7,7 @@ import 'package:restaurant/provider/app_provider.dart';
 import 'package:restaurant/utils/config.dart';
 import 'package:restaurant/utils/state.dart';
 import 'package:restaurant/widgets/menu_card_widget.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:restaurant/widgets/skeleton_widget.dart';
 
@@ -30,7 +31,7 @@ class _DetailPageState extends State<DetailPage> {
     AppProvider provider;
     return ChangeNotifierProvider(
       create: (_) {
-        provider = AppProvider(apiService: ApiService());
+        provider = AppProvider(apiService: ApiService(http.Client()));
         return provider.getRestaurant(widget.restaurantId);
       },
       child: Scaffold(

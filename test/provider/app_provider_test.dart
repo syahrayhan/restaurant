@@ -1,15 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:restaurant/data/api/api_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:restaurant/data/models/detail_restaurant.dart';
 import 'package:restaurant/data/models/restaurant_detail_response.dart';
-import 'package:restaurant/provider/app_provider.dart';
+import 'package:restaurant/utils/config.dart';
 
 import 'app_provider_test.mocks.dart';
 
-@GenerateMocks([ApiService])
+@GenerateMocks([http.Client])
 void main() {
   var detailRestaurant = {
     "error": false,
@@ -49,24 +50,17 @@ void main() {
 
   group('AppProvider Test', () {
     const id = 'rqdv5juczeskfw1e867';
-    final mockApiService = MockApiService();
-    late AppProvider appProvider;
-
-    setUp(() {
-      appProvider = AppProvider(apiService: mockApiService);
-    });
+    final mockApiService = MockClient();
+    final ApiService apiService = ApiService(mockApiService);
 
     test('Verify json parsing, Check detail resturant by id from API',
         () async {
-      var aa = RestaurantDetailModel.fromJson(detailRestaurant);
       //stub
-      when(mockApiService.getDetail(id))
-          .thenAnswer((value) => Future.value(aa));
-      //act
-      await appProvider.fetchRestaurant(id);
-      var testDetailRestaurantId = appProvider.restaurant.restaurant.id == id;
+      when(mockApiService.get(Uri.parse(Config.BASE_URL + 'detail/$id')))
+          .thenAnswer(
+              (_) async => http.Response(json.encode(detailRestaurant), 200));
       //assert
-      expect(testDetailRestaurantId, true);
+      expect(await apiService.getDetail(id), isA<RestaurantDetailModel>());
     });
   });
 }

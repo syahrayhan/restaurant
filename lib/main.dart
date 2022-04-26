@@ -23,6 +23,7 @@ import 'package:restaurant/common/style.dart';
 import 'package:restaurant/utils/background_service.dart';
 import 'package:restaurant/utils/notification_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (context) =>
-              AppProvider(apiService: ApiService()).getRestaurants(),
+              AppProvider(apiService: ApiService(http.Client())).getRestaurants(),
         ),
         ChangeNotifierProvider(create: (_) => SchedulingRestaurantProvider()),
         ChangeNotifierProvider(
